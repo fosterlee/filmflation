@@ -15,7 +15,7 @@
         "chart_color": "#4C78A8"
       },
       {
-        "label": "Life Insurance Policy: $500",
+        "label": "Life Insurance Equity: $500",
         "description": "George's life insurance policy equity\n**$500 in December 1945**",
         "amount_col": "AMOUNT_500_ADJUSTED",
         "original_amount": 500,
@@ -85,6 +85,37 @@
         "amount_col": "AMOUNT_10000_ADJUSTED",
         "original_amount": 10000,
         "chart_color": "#D62728"
+      }
+    ]
+  },
+  {
+    "film": "Casino Royale",
+    "year": 2006,
+    "base_year": 2006,
+    "base_month": "Nov",
+    "table": "FILMFLATION.PUBLIC.INFLATION_ADJUSTMENT_CASINO_ROYALE",
+    "dollar_col": "DOLLAR_2006_WORTH_TODAY",
+    "scenes": [
+      {
+        "label": "Obanno/Le Chiffre's Loss: $100M",
+        "description": "Steven Obanno's funds invested with Le Chiffre:\n**$100,000,000 in November 2006**",
+        "amount_col": "AMOUNT_100000000_ADJUSTED",
+        "original_amount": 100000000,
+        "chart_color": "#E45756"
+      },
+      {
+        "label": "Vesper's Ante (MI6): $10M",
+        "description": "Vesper Lynd (MI6) poker buy-in for Bond at Casino Royale:\n**$10,000,000 in November 2006**",
+        "amount_col": "AMOUNT_10000000_ADJUSTED",
+        "original_amount": 10000000,
+        "chart_color": "#FFD700"
+      },
+      {
+        "label": "Felix's Rebuy (CIA): $5M",
+        "description": "Felix Leiter (CIA) poker rebuy stake for Bond:\n**$5,000,000 in November 2006**",
+        "amount_col": "AMOUNT_5000000_ADJUSTED",
+        "original_amount": 5000000,
+        "chart_color": "#4C78A8"
       }
     ]
   }

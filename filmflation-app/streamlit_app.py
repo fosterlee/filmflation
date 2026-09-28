@@ -15,9 +15,9 @@ with open(CONFIG_PATH) as f:
 FILM_INDEX = {film["film"]: film for film in FILMS}
 
 
-@st.cache_data
 def load_table(table_fqn):
-    return conn.query(f"SELECT * FROM {table_fqn} ORDER BY DECADE_YEAR")
+    session = conn.session()
+    return session.sql(f"SELECT * FROM {table_fqn} ORDER BY DECADE_YEAR").to_pandas()
 
 
 # --- Sidebar ---
@@ -48,6 +48,7 @@ df = load_table(table_fqn)
 
 # --- Title ---
 st.title("FilmFlation")
+st.caption("\"How much is that worth in today's dollars?\"")
 st.markdown(f"**{film_name}** ({film['year']})  \n{scene['description']}")
 
 # --- KPI row ---
