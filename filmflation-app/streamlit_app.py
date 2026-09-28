@@ -14,10 +14,14 @@ with open(CONFIG_PATH) as f:
 
 FILM_INDEX = {film["film"]: film for film in FILMS}
 
+UDTF = "FILMFLATION.PUBLIC.CALC_INFLATION"
 
-def load_table(table_fqn):
+
+def load_inflation(base_year, base_month, step_years):
     session = conn.session()
-    return session.sql(f"SELECT * FROM {table_fqn} ORDER BY DECADE_YEAR").to_pandas()
+    return session.sql(
+        f"SELECT * FROM TABLE({UDTF}({base_year}, {base_month}, {step_years}))"
+    ).to_pandas()
 
 
 # --- Sidebar ---
@@ -34,43 +38,45 @@ with st.sidebar:
 
 scene = next(s for s in film["scenes"] if s["label"] == scene_label)
 
-# Resolve per-scene overrides (e.g. Bank Run uses a different table/base year)
-table_fqn = scene.get("table_override", film["table"])
-dollar_col = scene.get("dollar_col_override", film["dollar_col"])
 base_year = scene.get("base_year_override", film["base_year"])
 base_month = film["base_month"]
-amount_col = scene["amount_col"]
+base_month_label = film["base_month_label"]
+step_years = film["step_years"]
 original_amount = scene["original_amount"]
 amount_label = f"${original_amount:,}"
 chart_color = scene["chart_color"]
 
-df = load_table(table_fqn)
+df = load_inflation(base_year, base_month, step_years)
+
+# Compute amount columns in Python
+df["AMOUNT_ADJUSTED"] = (original_amount * df["CUMULATIVE_MULTIPLIER"]).round(2)
+df["DOLLAR_WORTH_TODAY"] = df["CUMULATIVE_MULTIPLIER"].round(2)
 
 # --- Title ---
 st.title("FilmFlation")
-st.caption("\"How much is that worth in today's dollars?\"")
+st.caption("If you've ever watched a movie that takes place in the past and wondered:  \n\"How much is that worth in today's dollars?\"  \n...then this app is for you.")
 st.markdown(f"**{film_name}** ({film['year']})  \n{scene['description']}")
 
 # --- KPI row ---
 latest = df.iloc[-1]
-latest_year = int(latest["DECADE_YEAR"])
+latest_year = int(latest["PERIOD_YEAR"])
 
 with st.container(horizontal=True):
     st.metric(
-        f"Original Amount ({base_month} {base_year})",
+        f"Original Amount ({base_month_label} {base_year})",
         f"${original_amount:,.0f}",
         border=True,
     )
     st.metric(
-        f"In {base_month} {latest_year} Dollars",
-        f"${float(latest[amount_col]):,.0f}",
+        f"In {base_month_label} {latest_year} Dollars",
+        f"${float(latest['AMOUNT_ADJUSTED']):,.0f}",
         f"+{float(latest['CUMULATIVE_INFLATION_PCT']):.0f}% cumulative inflation",
         border=True,
     )
     st.metric(
         f"{base_year} Dollar Multiplier",
         f"{float(latest['CUMULATIVE_MULTIPLIER']):.2f}x",
-        f"$1 in {base_year} = ${float(latest[dollar_col]):.2f} today",
+        f"$1 in {base_year} = ${float(latest['DOLLAR_WORTH_TODAY']):.2f} today",
         border=True,
     )
 
@@ -81,11 +87,11 @@ with st.container(border=True):
     st.subheader(f"{amount_label} Adjusted for Inflation")
 
     chart_df = pd.DataFrame({
-        "Decade": [str(int(y)) for y in df["DECADE_YEAR"]],
-        "Amount": [float(v) for v in df[amount_col]],
+        "Year": [str(int(y)) for y in df["PERIOD_YEAR"]],
+        "Amount": [float(v) for v in df["AMOUNT_ADJUSTED"]],
         "Multiplier": [float(v) for v in df["CUMULATIVE_MULTIPLIER"]],
         "Cumulative": [float(v) for v in df["CUMULATIVE_INFLATION_PCT"]],
-        "DodPct": [float(v) if v is not None else 0.0 for v in df["DECADE_OVER_DECADE_PCT"]],
+        "PoPPct": [float(v) if v is not None else 0.0 for v in df["PERIOD_OVER_PERIOD_PCT"]],
     })
 
     r, g, b = (int(chart_color.lstrip("#")[i:i+2], 16) for i in (0, 2, 4))
@@ -104,14 +110,14 @@ with st.container(border=True):
             ),
         )
         .encode(
-            x=alt.X("Decade:N", sort=None, axis=alt.Axis(labelAngle=0)),
-            y=alt.Y("Amount:Q", title="Value (USD)"),
+            x=alt.X("Year:N", sort=None, axis=alt.Axis(labelAngle=0)),
+            y=alt.Y("Amount:Q", title="Value (USD)", axis=alt.Axis(format="$,.0f")),
             tooltip=[
-                alt.Tooltip("Decade:N", title="Year"),
+                alt.Tooltip("Year:N", title="Year"),
                 alt.Tooltip("Amount:Q", title=f"{amount_label} Adjusted", format="$,.0f"),
                 alt.Tooltip("Multiplier:Q", title="Multiplier", format=".2f"),
                 alt.Tooltip("Cumulative:Q", title="Cumulative Inflation %", format=",.1f"),
-                alt.Tooltip("DodPct:Q", title="Decade Change %", format=",.1f"),
+                alt.Tooltip("PoPPct:Q", title="Period Change %", format=",.1f"),
             ],
         )
         .properties(height=350)
@@ -121,8 +127,8 @@ with st.container(border=True):
         alt.Chart(chart_df)
         .mark_point(filled=True, size=60, color="white", stroke=chart_color, strokeWidth=2)
         .encode(
-            x=alt.X("Decade:N", sort=None),
-            y=alt.Y("Amount:Q"),
+            x=alt.X("Year:N", sort=None),
+            y=alt.Y("Amount:Q", axis=alt.Axis(format="$,.0f")),
         )
     )
 
@@ -130,8 +136,8 @@ with st.container(border=True):
         alt.Chart(chart_df)
         .mark_text(dy=-15, fontSize=11, fontWeight="bold", color="white")
         .encode(
-            x=alt.X("Decade:N", sort=None),
-            y=alt.Y("Amount:Q"),
+            x=alt.X("Year:N", sort=None),
+            y=alt.Y("Amount:Q", axis=alt.Axis(format="$,.0f")),
             text=alt.Text("Amount:Q", format="$,.0f"),
         )
     )
@@ -140,23 +146,24 @@ with st.container(border=True):
 
 st.divider()
 
-# --- Decade-over-decade bar chart ---
+# --- Period-over-period bar chart ---
 with st.container(border=True):
-    st.subheader("Decade-over-Decade Inflation (%)")
+    period_label = "Decade" if step_years == 10 else f"{step_years}-Year"
+    st.subheader(f"{period_label}-over-{period_label} Inflation (%)")
 
-    dod_rows = df[df["DECADE_OVER_DECADE_PCT"].notna()]
-    dod_df = pd.DataFrame({
-        "Decade": [str(int(y)) for y in dod_rows["DECADE_YEAR"]],
-        "Pct": [float(v) for v in dod_rows["DECADE_OVER_DECADE_PCT"]],
-        "Amount": [float(v) for v in dod_rows[amount_col]],
-        "Cumulative": [float(v) for v in dod_rows["CUMULATIVE_INFLATION_PCT"]],
+    pop_rows = df[df["PERIOD_OVER_PERIOD_PCT"].notna()]
+    pop_df = pd.DataFrame({
+        "Year": [str(int(y)) for y in pop_rows["PERIOD_YEAR"]],
+        "Pct": [float(v) for v in pop_rows["PERIOD_OVER_PERIOD_PCT"]],
+        "Amount": [float(v) for v in pop_rows["AMOUNT_ADJUSTED"]],
+        "Cumulative": [float(v) for v in pop_rows["CUMULATIVE_INFLATION_PCT"]],
     })
 
     bars = (
-        alt.Chart(dod_df)
+        alt.Chart(pop_df)
         .mark_bar(cornerRadiusTopLeft=4, cornerRadiusTopRight=4)
         .encode(
-            x=alt.X("Decade:N", sort=None, axis=alt.Axis(labelAngle=0)),
+            x=alt.X("Year:N", sort=None, axis=alt.Axis(labelAngle=0)),
             y=alt.Y("Pct:Q", title="Inflation (%)"),
             color=alt.Color(
                 "Pct:Q",
@@ -167,8 +174,8 @@ with st.container(border=True):
                 legend=None,
             ),
             tooltip=[
-                alt.Tooltip("Decade:N", title="Decade"),
-                alt.Tooltip("Pct:Q", title="Decade Change %", format=",.1f"),
+                alt.Tooltip("Year:N", title="Year"),
+                alt.Tooltip("Pct:Q", title=f"{period_label} Change %", format=",.1f"),
                 alt.Tooltip("Cumulative:Q", title="Cumulative Inflation %", format=",.1f"),
                 alt.Tooltip("Amount:Q", title=f"{amount_label} Adjusted", format="$,.0f"),
             ],
@@ -177,10 +184,10 @@ with st.container(border=True):
     )
 
     bar_labels = (
-        alt.Chart(dod_df)
+        alt.Chart(pop_df)
         .mark_text(dy=-10, fontSize=11, fontWeight="bold")
         .encode(
-            x=alt.X("Decade:N", sort=None),
+            x=alt.X("Year:N", sort=None),
             y=alt.Y("Pct:Q"),
             text=alt.Text("Pct:Q", format=".1f"),
         )
@@ -194,18 +201,23 @@ st.divider()
 with st.container(border=True):
     st.subheader("Full Inflation Data")
 
-    col_config = {
-        "DECADE_YEAR": st.column_config.NumberColumn("Decade", format="%d"),
-        "CPI_VALUE": st.column_config.NumberColumn("CPI Index", format="%.1f"),
-        "CUMULATIVE_MULTIPLIER": st.column_config.NumberColumn("Multiplier", format="%.2fx"),
-        dollar_col: st.column_config.NumberColumn(f"$1 ({base_year}) Worth", format="$%.2f"),
-        amount_col: st.column_config.NumberColumn(f"{amount_label} Adjusted", format="$%,.0f"),
-        "CUMULATIVE_INFLATION_PCT": st.column_config.NumberColumn("Cumulative %", format="%.1f%%"),
-        "DECADE_OVER_DECADE_PCT": st.column_config.NumberColumn("Decade Change %", format="%.1f%%"),
-    }
+    display_df = df[["PERIOD_YEAR", "CPI_VALUE", "CUMULATIVE_MULTIPLIER",
+                     "DOLLAR_WORTH_TODAY", "AMOUNT_ADJUSTED",
+                     "CUMULATIVE_INFLATION_PCT", "PERIOD_OVER_PERIOD_PCT"]].copy()
 
-    display_cols = [c for c in col_config if c in df.columns]
-    st.dataframe(df[display_cols], column_config=col_config, hide_index=True)
+    st.dataframe(
+        display_df,
+        column_config={
+            "PERIOD_YEAR": st.column_config.NumberColumn("Year", format="%d"),
+            "CPI_VALUE": st.column_config.NumberColumn("CPI Index", format="%.1f"),
+            "CUMULATIVE_MULTIPLIER": st.column_config.NumberColumn("Multiplier", format="%.2fx"),
+            "DOLLAR_WORTH_TODAY": st.column_config.NumberColumn(f"$1 ({base_year}) Worth", format="$%.2f"),
+            "AMOUNT_ADJUSTED": st.column_config.NumberColumn(f"{amount_label} Adjusted", format="$%,.0f"),
+            "CUMULATIVE_INFLATION_PCT": st.column_config.NumberColumn("Cumulative %", format="%.1f%%"),
+            "PERIOD_OVER_PERIOD_PCT": st.column_config.NumberColumn(f"{period_label} Change %", format="%.1f%%"),
+        },
+        hide_index=True,
+    )
 
 st.caption(
     "Source: U.S. Bureau of Labor Statistics CPI-U (All Items, Not Seasonally Adjusted) "
