@@ -1,0 +1,91 @@
+[
+  {
+    "film": "It's a Wonderful Life",
+    "year": 1946,
+    "base_year": 1945,
+    "base_month": "Dec",
+    "table": "FILMFLATION.PUBLIC.INFLATION_ADJUSTMENT",
+    "dollar_col": "DOLLAR_1945_WORTH_TODAY",
+    "scenes": [
+      {
+        "label": "Billy's Deposit — $8,000",
+        "description": "Uncle Billy misplaces the bank deposit:\n**$8,000 on Mon, Dec 24, 1945 (Christmas Eve)**",
+        "amount_col": "AMOUNT_8000_ADJUSTED",
+        "original_amount": 8000,
+        "chart_color": "#4C78A8"
+      },
+      {
+        "label": "Life Insurance Policy — $500",
+        "description": "George's life insurance policy equity\n**$500 in December 1945**",
+        "amount_col": "AMOUNT_500_ADJUSTED",
+        "original_amount": 500,
+        "chart_color": "#72B7B2"
+      },
+      {
+        "label": "Bank Run — $2,000",
+        "description": "The Bank Run / George and Mary's honeymoon money:\n**$2,000 in December 1932**",
+        "amount_col": "AMOUNT_2000_ADJUSTED",
+        "original_amount": 2000,
+        "chart_color": "#B279A2",
+        "table_override": "FILMFLATION.PUBLIC.INFLATION_ADJUSTMENT_BANKRUN",
+        "dollar_col_override": "DOLLAR_1932_WORTH_TODAY",
+        "base_year_override": 1932
+      }
+    ]
+  },
+  {
+    "film": "The Sting",
+    "year": 1973,
+    "base_year": 1936,
+    "base_month": "Sep",
+    "table": "FILMFLATION.PUBLIC.INFLATION_ADJUSTMENT_STING",
+    "dollar_col": "DOLLAR_1936_WORTH_TODAY",
+    "scenes": [
+      {
+        "label": "The Opening — $11,000",
+        "description": "The Opening Con in Joliet, IL:\n**$11,000 in September 1936**",
+        "amount_col": "AMOUNT_11000_ADJUSTED",
+        "original_amount": 11000,
+        "chart_color": "#E58606"
+      },
+      {
+        "label": "Poker Game — $15,000",
+        "description": "The Poker Game on the 20th Century Limited:\n**$15,000 in September 1936**",
+        "amount_col": "AMOUNT_15000_ADJUSTED",
+        "original_amount": 15000,
+        "chart_color": "#F58518"
+      },
+      {
+        "label": "The Wire — $500,000",
+        "description": "The Wire — the big con:\n**$500,000 in September 1936**",
+        "amount_col": "AMOUNT_500000_ADJUSTED",
+        "original_amount": 500000,
+        "chart_color": "#54B399"
+      }
+    ]
+  },
+  {
+    "film": "Jaws",
+    "year": 1975,
+    "base_year": 1975,
+    "base_month": "Jun",
+    "table": "FILMFLATION.PUBLIC.INFLATION_ADJUSTMENT_JAWS",
+    "dollar_col": "DOLLAR_1975_WORTH_TODAY",
+    "scenes": [
+      {
+        "label": "Mrs. Kintner's Bounty — $3,000",
+        "description": "Mrs. Kintner's bounty on the shark:\n**$3,000 on June 30, 1975**",
+        "amount_col": "AMOUNT_3000_ADJUSTED",
+        "original_amount": 3000,
+        "chart_color": "#1F77B4"
+      },
+      {
+        "label": "Quint's Counter — $10,000",
+        "description": "Quint's counter-offer to kill the shark:\n**$10,000 on June 30, 1975**",
+        "amount_col": "AMOUNT_10000_ADJUSTED",
+        "original_amount": 10000,
+        "chart_color": "#D62728"
+      }
+    ]
+  }
+]

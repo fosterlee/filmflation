@@ -9,4 +9,5 @@ entities:
     artifacts:
       - pyproject.toml
       - streamlit_app.py
+      - films_config.json
       - .streamlit/config.toml
