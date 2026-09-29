@@ -35,7 +35,7 @@ UDTF = "FILMFLATION.PUBLIC.CALC_INFLATION"
 
 def load_inflation(base_year, base_month, step_years):
     return conn.query(
-        f"SELECT * FROM TABLE({UDTF}({base_year}, {base_month}, {step_years}))"
+        f"SELECT * FROM TABLE({UDTF}({base_year}, {base_month}, {step_years}))",
         ttl=0,
     )
 
