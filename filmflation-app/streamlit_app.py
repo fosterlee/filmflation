@@ -6,7 +6,22 @@ import pandas as pd
 
 st.set_page_config(page_title="FilmFlation", layout="wide")
 
-conn = st.connection("snowflake", ttl=os.getenv("SNOWFLAKE_CONNECTION_TTL"))
+# Dual-mode connection: Snowflake Workspace (embedded session) vs Community Cloud (key-pair)
+if os.getenv("SNOWFLAKE_CONNECTION_TTL"):
+    conn = st.connection("snowflake", ttl=os.getenv("SNOWFLAKE_CONNECTION_TTL"))
+else:
+    from cryptography.hazmat.primitives import serialization
+    pem_key = st.secrets["connections"]["snowflake"]["private_key"].encode()
+    p_key = serialization.load_pem_private_key(pem_key, password=None)
+    pkb = p_key.private_bytes(
+        encoding=serialization.Encoding.DER,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption(),
+    )
+    conn = st.connection(
+        "snowflake",
+        private_key=pkb,
+    )
 
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), "films_config.json")
 with open(CONFIG_PATH) as f:
@@ -18,10 +33,9 @@ UDTF = "FILMFLATION.PUBLIC.CALC_INFLATION"
 
 
 def load_inflation(base_year, base_month, step_years):
-    session = conn.session()
-    return session.sql(
+    return conn.query(
         f"SELECT * FROM TABLE({UDTF}({base_year}, {base_month}, {step_years}))"
-    ).to_pandas()
+    )
 
 
 # --- Sidebar ---
