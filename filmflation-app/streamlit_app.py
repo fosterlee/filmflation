@@ -36,12 +36,17 @@ with st.sidebar:
     scene_labels = [s["label"] for s in film["scenes"]]
     scene_label = st.selectbox("Which scene?", scene_labels)
 
+    step_years = st.select_slider(
+        "Year Interval [1, 2, 5 or 10]",
+        options=[1, 2, 5, 10],
+        value=film["step_years"],
+    )
+
 scene = next(s for s in film["scenes"] if s["label"] == scene_label)
 
 base_year = scene.get("base_year_override", film["base_year"])
 base_month = film["base_month"]
 base_month_label = film["base_month_label"]
-step_years = film["step_years"]
 original_amount = scene["original_amount"]
 amount_label = f"${original_amount:,}"
 chart_color = scene["chart_color"]
