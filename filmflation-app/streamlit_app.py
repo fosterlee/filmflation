@@ -75,8 +75,8 @@ df["DOLLAR_WORTH_TODAY"] = df["CUMULATIVE_MULTIPLIER"].round(2)
 
 # --- Title ---
 st.title("FilmFlation")
-st.caption("Have you ever watched a movie that takes place in the past and wondered:  \n\"How much is that worth in today's dollars?\"  \n  \nNote: [Snowflake Public Data (Free)](https://app.snowflake.com/marketplace/listing/GZTSZ290BV255/snowflake-public-data-products-snowflake-public-data-free) statistics are subject to a three month lag (one quarter).  \n  \n[GitHub](https://github.com/fosterlee/filmflation)")
-st.markdown(f"**{film_name}** ({film['year']})  \n{scene['description']}")
+st.caption("Have you ever watched a movie that takes place in the past and wondered:  \n\"How much is that worth in today's dollars?\"  \n  \nAuthor: [Foster Lee](http://linkedin.com/in/fosterlee) | Source Code & Documentation: [GitHub](https://github.com/fosterlee/filmflation)  \n  \nNote: [Snowflake Public Data (Free)](https://app.snowflake.com/marketplace/listing/GZTSZ290BV255/snowflake-public-data-products-snowflake-public-data-free) statistics are subject to a three month lag (one quarter).")
+st.subheader(f"**{film_name}** ({film['year']})  \n{scene['description']}")
 
 # --- KPI row ---
 latest = df.iloc[-1]

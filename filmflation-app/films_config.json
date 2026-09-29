@@ -8,13 +8,13 @@
     "step_years": 10,
     "scenes": [
       {
-        "label": "Billy's Deposit: $8,000",
+        "label": "Uncle Billy's Deposit: $8,000",
         "description": "Uncle Billy misplaces the bank deposit:\n**$8,000 on Mon, Dec 24, 1945 (Christmas Eve)**",
         "original_amount": 8000,
         "chart_color": "#4C78A8"
       },
       {
-        "label": "Life Insurance Policy: $500",
+        "label": "Life Insurance Equity: $500",
         "description": "George's life insurance policy equity\n**$500 in December 1945**",
         "original_amount": 500,
         "chart_color": "#72B7B2"
