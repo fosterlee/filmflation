@@ -75,7 +75,7 @@ df["DOLLAR_WORTH_TODAY"] = df["CUMULATIVE_MULTIPLIER"].round(2)
 
 # --- Title ---
 st.title("FilmFlation")
-st.caption("If you've ever watched a movie that takes place in the past and wondered:  \n\"How much is that worth in today's dollars?\"  \n...then this app is for you.")
+st.caption("Have you ever watched a movie that takes place in the past and wondered:  \n\"How much is that worth in today's dollars?\"  \n  \nNote: [Snowflake Public Data (Free)](https://app.snowflake.com/marketplace/listing/GZTSZ290BV255/snowflake-public-data-products-snowflake-public-data-free) statistics are subject to a three month lag (one quarter).  \n  \n[GitHub](https://github.com/fosterlee/filmflation)")
 st.markdown(f"**{film_name}** ({film['year']})  \n{scene['description']}")
 
 # --- KPI row ---
@@ -242,6 +242,6 @@ with st.container(border=True):
     )
 
 st.caption(
-    "Source: U.S. Bureau of Labor Statistics CPI-U (All Items, Not Seasonally Adjusted) "
+    "Source: [U.S. Bureau of Labor Statistics](https://www.bls.gov/) CPI-U (All Items, Not Seasonally Adjusted) "
     "via Snowflake Marketplace. Built with CoCo."
 )
