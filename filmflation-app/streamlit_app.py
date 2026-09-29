@@ -2,6 +2,7 @@ import streamlit as st
 import altair as alt
 import os
 import json
+import calendar
 import pandas as pd
 
 st.set_page_config(page_title="FilmFlation", layout="wide")
@@ -35,6 +36,7 @@ UDTF = "FILMFLATION.PUBLIC.CALC_INFLATION"
 def load_inflation(base_year, base_month, step_years):
     return conn.query(
         f"SELECT * FROM TABLE({UDTF}({base_year}, {base_month}, {step_years}))"
+        ttl=0,
     )
 
 
@@ -79,6 +81,7 @@ st.markdown(f"**{film_name}** ({film['year']})  \n{scene['description']}")
 # --- KPI row ---
 latest = df.iloc[-1]
 latest_year = int(latest["PERIOD_YEAR"])
+latest_month_name = calendar.month_abbr[pd.to_datetime(latest["CPI_DATE"]).month]
 
 with st.container(horizontal=True):
     st.metric(
@@ -87,7 +90,7 @@ with st.container(horizontal=True):
         border=True,
     )
     st.metric(
-        f"In {base_month_label} {latest_year} Dollars",
+        f"In {latest_month_name} {latest_year} Dollars",
         f"${float(latest['AMOUNT_ADJUSTED']):,.0f}",
         f"+{float(latest['CUMULATIVE_INFLATION_PCT']):.0f}% cumulative inflation",
         border=True,
