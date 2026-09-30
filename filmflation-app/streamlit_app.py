@@ -76,7 +76,7 @@ df["DOLLAR_WORTH_TODAY"] = df["CUMULATIVE_MULTIPLIER"].round(2)
 # --- Title ---
 st.title("FilmFlation")
 caption_01: str = f"Have you ever watched a movie that takes place in the past and wondered:"
-caption_02: str = f'''"How much is that plot device is worth in today's dollars?"'''
+caption_02: str = f'''"How much is that plot device worth in today's dollars?"'''
 caption_03: str = f"Author: [Foster Lee](http://linkedin.com/in/fosterlee) | Source Code & Documentation: [GitHub](https://github.com/fosterlee/filmflation)"
 caption_04: str = f"Note: [Snowflake Public Data (Free)](https://app.snowflake.com/marketplace/listing/GZTSZ290BV255/snowflake-public-data-products-snowflake-public-data-free) statistics are subject to a three month lag (one quarter)."
 
