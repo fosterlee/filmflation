@@ -50,7 +50,7 @@ with st.sidebar:
     )
     film = FILM_INDEX[film_name]
     scene_labels = [s["label"] for s in film["scenes"]]
-    scene_label = st.selectbox("Which scene?", scene_labels)
+    scene_label = st.selectbox("Which object or scene?", scene_labels)
 
     step_years = st.select_slider(
         "Year Interval [1, 2, 5 or 10]",
@@ -75,7 +75,12 @@ df["DOLLAR_WORTH_TODAY"] = df["CUMULATIVE_MULTIPLIER"].round(2)
 
 # --- Title ---
 st.title("FilmFlation")
-st.caption("Have you ever watched a movie that takes place in the past and wondered:  \n\"How much is that thing in the story worth in today's dollars?\"  \n  \nAuthor: [Foster Lee](http://linkedin.com/in/fosterlee) | Source Code & Documentation: [GitHub](https://github.com/fosterlee/filmflation)  \n  \nNote: [Snowflake Public Data (Free)](https://app.snowflake.com/marketplace/listing/GZTSZ290BV255/snowflake-public-data-products-snowflake-public-data-free) statistics are subject to a three month lag (one quarter).")
+caption_01: str = f"Have you ever watched a movie that takes place in the past and wondered:"
+caption_02: str = f'''"How much is that plot device is worth in today's dollars?"'''
+caption_03: str = f"Author: [Foster Lee](http://linkedin.com/in/fosterlee) | Source Code & Documentation: [GitHub](https://github.com/fosterlee/filmflation)"
+caption_04: str = f"Note: [Snowflake Public Data (Free)](https://app.snowflake.com/marketplace/listing/GZTSZ290BV255/snowflake-public-data-products-snowflake-public-data-free) statistics are subject to a three month lag (one quarter)."
+
+st.caption(f"""{caption_01}  \n{caption_02}  \n  \n{caption_03}  \n  \n{caption_04}""")
 st.markdown(
     f"### {film_name} ({film['year']})  \n"
     f"[IMDb]({film['url_imdb']}) | [Wikipedia]({film['url_wiki']})  \n  \n"
