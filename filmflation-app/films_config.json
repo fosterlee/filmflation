@@ -6,6 +6,8 @@
     "base_month": 12,
     "base_month_label": "Dec",
     "step_years": 10,
+    "url_imdb": "https://www.imdb.com/title/tt0038650/",
+    "url_wiki": "https://en.wikipedia.org/wiki/It%27s_a_Wonderful_Life",
     "scenes": [
       {
         "label": "Uncle Billy's Deposit: $8,000",
@@ -35,6 +37,8 @@
     "base_month": 9,
     "base_month_label": "Sep",
     "step_years": 10,
+    "url_imdb": "https://www.imdb.com/title/tt0070735/",
+    "url_wiki": "https://en.wikipedia.org/wiki/The_Sting",
     "scenes": [
       {
         "label": "Luther's Last Con: $11,000",
@@ -63,6 +67,8 @@
     "base_month": 6,
     "base_month_label": "Jun",
     "step_years": 10,
+    "url_imdb": "https://www.imdb.com/title/tt0073195/",
+    "url_wiki": "https://en.wikipedia.org/wiki/Jaws_(film)",
     "scenes": [
       {
         "label": "Mrs. Kintner's Bounty: $3,000",
@@ -85,10 +91,12 @@
     "base_month": 11,
     "base_month_label": "Nov",
     "step_years": 5,
+    "url_imdb": "https://www.imdb.com/title/tt0381061/",
+    "url_wiki": "https://en.wikipedia.org/wiki/Casino_Royale_(2006_film)",
     "scenes": [
       {
         "label": "Obanno's Investment: $100M",
-        "description": "Steven Obanno's terrorist funds invested with Le Chiffre:\n**$100,000,000 in November 2006**",
+        "description": "Steven Obanno's funds invested with Le Chiffre:\n**$100,000,000 in November 2006**",
         "original_amount": 100000000,
         "chart_color": "#E45756"
       },
@@ -103,6 +111,24 @@
         "description": "Felix Leiter (CIA) poker rebuy stake for Bond:\n**$5,000,000 in November 2006**",
         "original_amount": 5000000,
         "chart_color": "#4C78A8"
+      }
+    ]
+  },
+  {
+    "film": "Titanic",
+    "year": 1997,
+    "base_year": 1996,
+    "base_month": 5,
+    "base_month_label": "May",
+    "step_years": 5,
+    "url_imdb": "https://www.imdb.com/title/tt0120338/",
+    "url_wiki": "http://en.wikipedia.org/wiki/Titanic_(1997_film)",
+    "scenes": [
+      {
+        "label": "Heart of the Ocean: $500M",
+        "description": "Rose's necklace:\n**$500,000,000 in May 1996**",
+        "original_amount": 500000000,
+        "chart_color": "#E45756"
       }
     ]
   }
