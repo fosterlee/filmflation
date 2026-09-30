@@ -75,7 +75,7 @@ df["DOLLAR_WORTH_TODAY"] = df["CUMULATIVE_MULTIPLIER"].round(2)
 
 # --- Title ---
 st.title("FilmFlation")
-st.caption("Have you ever watched a movie that takes place in the past and wondered:  \n\"How much is that worth in today's dollars?\"  \n  \nAuthor: [Foster Lee](http://linkedin.com/in/fosterlee) | Source Code & Documentation: [GitHub](https://github.com/fosterlee/filmflation)  \n  \nNote: [Snowflake Public Data (Free)](https://app.snowflake.com/marketplace/listing/GZTSZ290BV255/snowflake-public-data-products-snowflake-public-data-free) statistics are subject to a three month lag (one quarter).")
+st.caption("Have you ever watched a movie that takes place in the past and wondered:  \n\"How much is that thing in the story worth in today's dollars?\"  \n  \nAuthor: [Foster Lee](http://linkedin.com/in/fosterlee) | Source Code & Documentation: [GitHub](https://github.com/fosterlee/filmflation)  \n  \nNote: [Snowflake Public Data (Free)](https://app.snowflake.com/marketplace/listing/GZTSZ290BV255/snowflake-public-data-products-snowflake-public-data-free) statistics are subject to a three month lag (one quarter).")
 st.markdown(
     f"### {film_name} ({film['year']})  \n"
     f"[IMDb]({film['url_imdb']}) | [Wikipedia]({film['url_wiki']})  \n  \n"
