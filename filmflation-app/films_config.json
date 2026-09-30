@@ -85,6 +85,24 @@
     ]
   },
   {
+    "film": "Titanic",
+    "year": 1997,
+    "base_year": 1996,
+    "base_month": 5,
+    "base_month_label": "May",
+    "step_years": 5,
+    "url_imdb": "https://www.imdb.com/title/tt0120338/",
+    "url_wiki": "http://en.wikipedia.org/wiki/Titanic_(1997_film)",
+    "scenes": [
+      {
+        "label": "Heart of the Ocean: $500M",
+        "description": "Rose's necklace:\n**$500,000,000 in May 1996**",
+        "original_amount": 500000000,
+        "chart_color": "#E45756"
+      }
+    ]
+  },
+  {
     "film": "Casino Royale",
     "year": 2006,
     "base_year": 2006,
@@ -111,24 +129,6 @@
         "description": "Felix Leiter (CIA) poker rebuy stake for Bond:\n**$5,000,000 in November 2006**",
         "original_amount": 5000000,
         "chart_color": "#4C78A8"
-      }
-    ]
-  },
-  {
-    "film": "Titanic",
-    "year": 1997,
-    "base_year": 1996,
-    "base_month": 5,
-    "base_month_label": "May",
-    "step_years": 5,
-    "url_imdb": "https://www.imdb.com/title/tt0120338/",
-    "url_wiki": "http://en.wikipedia.org/wiki/Titanic_(1997_film)",
-    "scenes": [
-      {
-        "label": "Heart of the Ocean: $500M",
-        "description": "Rose's necklace:\n**$500,000,000 in May 1996**",
-        "original_amount": 500000000,
-        "chart_color": "#E45756"
       }
     ]
   }
